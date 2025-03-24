@@ -1,0 +1,102 @@
+#include <iostream>
+#include <stdexcept>
+
+using namespace std;
+
+template <typename T>
+class Vector {
+protected:
+    T* items;
+    int size;
+    int capacity;
+
+public:
+    Vector(int _capacity = 10) : size(0), capacity(_capacity) {
+        items = new T[capacity];
+    }
+
+    ~Vector() {
+        delete[] items;
+    }
+
+    void pushBack(const T& value) {
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+        items[size++] = value;
+    }
+
+    T at(int index) const{
+        if (index < 0 || index >= size) {
+            throw out_of_range("Índice fuera de rango");
+        }
+        return items[index];
+    }
+
+    void set(int index, T value) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Índice fuera de rango");
+        }
+        items[index] = value;
+    }
+
+    int getSize() const{
+        return size;
+    }
+
+    int getCapacity() {
+        return capacity;
+    }
+
+    void resize(int newCapacity) {
+        if (newCapacity <= capacity)
+            return;
+
+        T* newItems = new T[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = items[i];
+        }
+        delete[] items;
+        items = newItems;
+        capacity = newCapacity;
+    }
+
+    void print() {
+        for (int i = 0; i < size; i++) {
+            cout << items[i] << " | ";
+        }
+        cout << endl;
+    }
+
+    bool esSimetrico() {
+        for (int i = 0; i < size / 2; i++) {
+            if (items[i] != items[size - 1 - i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+int sumaPares(const Vector<int>& v) {
+    int suma = 0;
+    for (int i = 0; i < v.getSize(); i++) {
+        if (v.at(i) % 2 == 0) {
+            suma += v.at(i);
+        }
+    }
+    return suma;
+}
+
+int main() {
+    Vector<int> v;
+    v.pushBack(1);
+    v.pushBack(2);
+    v.pushBack(3);
+    v.pushBack(4);
+    v.pushBack(5);
+    v.pushBack(6);
+
+    cout << "Suma de pares: " << sumaPares(v) << endl;
+
+    return 0;
+}
