@@ -5,12 +5,12 @@ using namespace std;
 
 template <typename T>
 class Vector {
-protected:
-    T* items;
+  private:
+    T *items;
     int size;
     int capacity;
 
-public:
+  public:
     Vector(int _capacity = 10) : size(0), capacity(_capacity) {
         items = new T[capacity];
     }
@@ -19,14 +19,14 @@ public:
         delete[] items;
     }
 
-    void pushBack(const T& value) {
+    void pushBack(const T &value) {
         if (size == capacity) {
             resize(capacity * 2);
         }
         items[size++] = value;
     }
 
-    T at(int index) const{
+    T at(int index) {
         if (index < 0 || index >= size) {
             throw out_of_range("Índice fuera de rango");
         }
@@ -40,7 +40,7 @@ public:
         items[index] = value;
     }
 
-    int getSize() const{
+    int getSize() {
         return size;
     }
 
@@ -52,7 +52,7 @@ public:
         if (newCapacity <= capacity)
             return;
 
-        T* newItems = new T[newCapacity];
+        T *newItems = new T[newCapacity];
         for (int i = 0; i < size; i++) {
             newItems[i] = items[i];
         }
@@ -68,35 +68,47 @@ public:
         cout << endl;
     }
 
-    bool esSimetrico() {
-        for (int i = 0; i < size / 2; i++) {
-            if (items[i] != items[size - 1 - i]) {
-                return false;
+    // Nueva función para sumar números pares
+    int sumaPares() {
+        int suma = 0;
+        for (int i = 0; i < size; i++) {
+            if (items[i] % 2 == 0) { // Verifica si el número es par
+                suma += items[i];
             }
         }
-        return true;
+        return suma;
     }
 };
-int sumaPares(const Vector<int>& v) {
-    int suma = 0;
-    for (int i = 0; i < v.getSize(); i++) {
-        if (v.at(i) % 2 == 0) {
-            suma += v.at(i);
-        }
-    }
-    return suma;
-}
 
 int main() {
-    Vector<int> v;
-    v.pushBack(1);
-    v.pushBack(2);
-    v.pushBack(3);
-    v.pushBack(4);
-    v.pushBack(5);
-    v.pushBack(6);
+    // Ejemplo 1: Vector con números pares e impares
+    Vector<int> v1;
+    v1.pushBack(1);
+    v1.pushBack(2);
+    v1.pushBack(3);
+    v1.pushBack(4);
+    v1.pushBack(6);
 
-    cout << "Suma de pares: " << sumaPares(v) << endl;
+    cout << "Vector 1: ";
+    v1.print();
+    cout << "Suma de numeros pares en Vector 1: " << v1.sumaPares() << endl;
+
+    // Ejemplo 2: Vector sin números pares
+    Vector<int> v2;
+    v2.pushBack(1);
+    v2.pushBack(3);
+    v2.pushBack(5);
+    v2.pushBack(7);
+
+    cout << "Vector 2: ";
+    v2.print();
+    cout << "Suma de numeros pares en Vector 2: " << v2.sumaPares() << endl;
+
+    // Ejemplo 3: Vector vacío
+    Vector<int> v3;
+    cout << "Vector 3: ";
+    v3.print();
+    cout << "Suma de numeros pares en Vector 3: " << v3.sumaPares() << endl;
 
     return 0;
 }
